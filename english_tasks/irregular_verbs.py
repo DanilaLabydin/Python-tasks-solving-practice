@@ -7,24 +7,26 @@ import csv
 import time
 import sys
 
+from argparse import ArgumentParser
+
 
 # create lists to store into them verbs for stat
-right_verbs = []
-wrong_verbs = []
-fixed_verbs = []
+RIGHT_VERBS = []
+WRONG_VERBS = []
+FIXED_VERBS = []
 
 
 def greeting():
-    print(f'This exercise help you learn an irregular english verb!\n'
-          f'Some rules that you should know\n'
-          f'    Write only V2 and V3 forms of verb\n'
-          f'    You have only 3 attempts to write the verb correctly\n'
-          f'Now enter your name and choose the number of verb that mean  your level\n'
-          f'  Dyreniy:        0 < verbs per time <= 10'
-          f'  Beginner:      11 < verbs per time <= 25\n'
-          f'  Elementary:    26 < verbs per time <= 40\n'
-          f'  Master:        41 < verbs per time <= 55\n'
-          f'  SuperPolya:    56 < verbs per time <= 74\n')
+    print('This exercise help you learn an irregular english verb!\n'
+          'Some rules that you should know\n'
+          '    Write only V2 and V3 forms of verb\n'
+          '    You have only 3 attempts to write the verb correctly\n'
+          'Now enter your name and choose the number of verb that mean  your level\n'
+          '  Dyreniy:        0 < verbs per time <= 10'
+          '  Beginner:      11 < verbs per time <= 25\n'
+          '  Elementary:    26 < verbs per time <= 40\n'
+          '  Master:        41 < verbs per time <= 55\n'
+          '  SuperPolya:    56 < verbs per time <= 74\n')
 
 
 def rows_list(file):
@@ -34,12 +36,18 @@ def rows_list(file):
     :return: the list that contains file's rows in tuple format
     """
     rows = []
-    with open(file) as file:
-        # open file like csv file because we want to store each value that is separated by a comma
-        csv_file = csv.reader(file)
-        for row in csv_file:
-            rows.append(row)
-    return rows
+    try:
+        with open(file) as file:
+            # open file like csv file because we want to store each value that is separated by a comma
+            csv_file = csv.reader(file)
+            for row in csv_file:
+                rows.append(row)
+
+            return rows
+
+    except Exception as e:
+        print(e)
+        exit(1)
 
 
 def random_verb(list_of_verbs):
@@ -76,6 +84,21 @@ def verbs_comparing(verb):
         check_v3 = False
     print()
     return check_v2 and check_v3
+
+
+def compare_user_verb(user_input, verb):
+    """
+    The function compares user's input with certain verb
+    :param user_input:
+    :param verb: the current verb(V3 and V3)
+    :return:
+    """
+    is_correct = True
+    if user_input.strip().lower() == verb[0]:
+        print('V2 is correct!')
+        return is_correct
+    print('V1 is not correct!')
+    return False
 
 
 def display_statistic(name, nb_verb, list1, list2, list3):
@@ -118,9 +141,17 @@ def display_statistic(name, nb_verb, list1, list2, list3):
     print(f'\nYour scores is {scores}%')
 
 
+def get_args():
+    a = ArgumentParser()
+    a.add_argument('-f', '--filename', dest='verbs_filename', type=str, required=True)
+    return a.parse_args()
+
+
 def main():
+    # add try except
+    arguments = get_args()
     # read the special file to store verbs into a list
-    list_of_rows = rows_list('irregular_verbs')
+    list_of_rows = rows_list(arguments.verbs_filename)
     greeting()
     name = input('Enter your name: ')
     nb_verb = int(input('Enter the number of verbs: '))
