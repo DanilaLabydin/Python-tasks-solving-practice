@@ -2,7 +2,7 @@
 ##
 # create a program that generates a random sentence for english practice
 #
-import random
+import secrets
 import csv
 import time
 import sys
@@ -14,19 +14,15 @@ from argparse import ArgumentParser
 RIGHT_VERBS = []
 WRONG_VERBS = []
 FIXED_VERBS = []
+RESULT_DICT = {'Correct Verbs': ..., 'Wrong Verbs': ..., 'Fixed Verbs': ...}
 
 
 def greeting():
     print('This exercise help you learn an irregular english verb!\n'
           'Some rules that you should know\n'
           '    Write only V2 and V3 forms of verb\n'
-          '    You have only 3 attempts to write the verb correctly\n'
-          'Now enter your name and choose the number of verb that mean  your level\n'
-          '  Dyreniy:        0 < verbs per time <= 10'
-          '  Beginner:      11 < verbs per time <= 25\n'
-          '  Elementary:    26 < verbs per time <= 40\n'
-          '  Master:        41 < verbs per time <= 55\n'
-          '  SuperPolya:    56 < verbs per time <= 74\n')
+          '    You have only 2 attempts to write the verb correctly\n'
+          'Now enter your name and choose the number of verbs\n')
 
 
 def rows_list(file):
@@ -56,74 +52,34 @@ def random_verb(list_of_verbs):
     :param list_of_verbs:
     :return:
     """
-    random_index = random.randint(0, len(list_of_verbs) - 1)
+    random_index = secrets.randbelow(len(list_of_verbs) - 1)
     verbs = list_of_verbs[random_index]
     return verbs
 
 
-def verbs_comparing(verb):
+def compare_verb(user_input, verb):
     """
     The function compares user's input with certain verb
-    :param verb: the current verb (v1,v2,v3)
-    :return: True if the user write the forms correct, otherwise False
+    :param user_input: a verb that was entered by the user
+    :param verb: the current verb(V3 or V3)
+    :return: True if the user wrote the correct form, otherwise False
     """
-    user_answer_v2 = input('Enter V2: ')
-    user_answer_v3 = input('Enter V3: ')
-    print()
-    if user_answer_v2.strip().lower() == verb[0]:
-        print('V2 is correct!')
-        check_v2 = True
-    else:
-        print('V2 is not correct!')
-        check_v2 = False
-    if user_answer_v3.strip().lower() == verb[1]:
-        print('V3 is correct!')
-        check_v3 = True
-    else:
-        print('V3 is not correct!')
-        check_v3 = False
-    print()
-    return check_v2 and check_v3
+    if user_input.strip().lower() == verb:
+        return True
 
-
-def compare_user_verb(user_input, verb):
-    """
-    The function compares user's input with certain verb
-    :param user_input:
-    :param verb: the current verb(V3 and V3)
-    :return:
-    """
-    is_correct = True
-    if user_input.strip().lower() == verb[0]:
-        print('V2 is correct!')
-        return is_correct
-    print('V1 is not correct!')
     return False
 
 
 def display_statistic(name, nb_verb, list1, list2, list3):
     """The function displays all statistic"""
     # compute the rating system and store it into a file
-    total = len(right_verbs) + len(wrong_verbs) + len(fixed_verbs)
-    scores = ((len(right_verbs) + (len(fixed_verbs)) * 0.5) / total) * 100
+    total = len(RIGHT_VERBS) + len(WRONG_VERBS) + len(FIXED_VERBS)
+    scores = ((len(RIGHT_VERBS) + (len(FIXED_VERBS)) * 0.5) / total) * 100
     now_time = time.asctime()
 
-    # determine the funny level
-    funny_level = ''
-    if 0 < nb_verb <= 10:
-        funny_level = 'Dyreniy'
-    elif 11 < nb_verb <= 25:
-        funny_level = 'Beginner'
-    elif 26 < nb_verb <= 40:
-        funny_level = 'Elementary'
-    elif 41 < nb_verb <= 55:
-        funny_level = 'Master'
-    elif 56 < nb_verb <= 74:
-        funny_level = 'SuperPolya'
-
-    string = f'{name.title()} | {now_time} | {funny_level}({nb_verb} verbs) | {scores}%\n'
+    user_stat = f'{name.title()} | {now_time} | ({nb_verb} verbs) | {scores}%\n'
     with open('results.txt', 'a') as file:
-        file.write(string)
+        file.write(user_stat)
 
     # display lists of verbs
     print()
@@ -147,44 +103,70 @@ def get_args():
     return a.parse_args()
 
 
+def generate_attempts(nb_attempt, verb, form_nb):
+    for attempt in range(1, nb_attempt + 1):
+        print(f'Attempt №{attempt}')
+        next_answer = input(f'Enter V{form_nb} again: ')
+        if compare_verb(next_answer, verb):
+            print('Correct!')
+            FIXED_VERBS.append(verb)
+            return True
+    WRONG_VERBS.append(verb)
+    return False
+
+
 def main():
     # add try except
     arguments = get_args()
+
     # read the special file to store verbs into a list
-    list_of_rows = rows_list(arguments.verbs_filename)
+    verbs_list = rows_list(arguments.verbs_filename)
     greeting()
     name = input('Enter your name: ')
     nb_verb = int(input('Enter the number of verbs: '))
-    if nb_verb > len(list_of_rows):
-        print('Error! You entered a lot of verbs(max number is 74)')
+
+    if not 0 < nb_verb <= len(verbs_list):
+        print('Error! You entered a wrong value (max number is 74)')
         sys.exit(1)
 
+    # ...
     for verb in range(1, nb_verb + 1):
-        print(f'verb №{verb}')
-        # generate a random verb from the list and display the V1
-        current_verb = random_verb(list_of_rows)
+        print(f'\nverb №{verb}')
+
+        # generate and display a random verb from the list and display the V1 of it
+        current_verb = random_verb(verbs_list)
         print(current_verb[0])
 
-        # compare the input with correct forms and store it in a result
-        result = verbs_comparing(current_verb[1:])
+        # read the answers from the user and compare it with correct v2 and v3 forms
+        answer_v2 = input('Enter the V2: ')
+        answer_v3 = input('Enter the V3: ')
+        result_v2 = compare_verb(answer_v2, current_verb[1])
+        result_v3 = compare_verb(answer_v3, current_verb[2])
 
-        # if the user write verbs wrong, he has only 3 try to write correct, then the verb is added to fixed_verbs list
-        # otherwise the program displays all verb's form, add the verb to wrong_verbs list
-        if not result:
-            for attempt in range(1, 4):
-                print(f'Attempt №{attempt}')
-                if verbs_comparing(current_verb[1:]):
-                    fixed_verbs.append(current_verb[0])
-                    break
-            else:
-                print(current_verb)
-                wrong_verbs.append(current_verb[0])
-        else:
-            right_verbs.append(current_verb[0])
-        list_of_rows.remove(current_verb)
+        # if all answers are correct, display it, save the verb in the list
+        # and continue executing with next verb, otherwise give the user
+        # 3 attempts to fix it
+        if result_v2 and result_v3:
+            print('All form is correct!\n')
+            RIGHT_VERBS.append(current_verb[0])
+            continue
+
+        # check if the v2 is incorrect
+        if not result_v2:
+            print('\nV2 is wrong!')
+            if not generate_attempts(2, current_verb[1], 2):
+                print(current_verb[1])
+
+        # check if the v3 is incorrect
+        if not result_v3:
+            print('\nV3 is wrong!')
+            if not generate_attempts(2, current_verb[2], 3):
+                print(current_verb[2])
+
+        verbs_list.remove(current_verb)
 
     # display all statistic and store the result into a file
-    display_statistic(name, nb_verb, right_verbs, wrong_verbs, fixed_verbs)
+    display_statistic(name, nb_verb, RIGHT_VERBS, WRONG_VERBS, FIXED_VERBS)
 
 
 if __name__ == '__main__':
