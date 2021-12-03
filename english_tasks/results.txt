@@ -1,0 +1,6 @@
+Test | Thu Dec  2 17:01:02 2021 | (15 verbs) | 80.0%
+Test | Thu Dec  2 17:06:03 2021 | (2 verbs) | 100.0%
+T | Thu Dec  2 17:09:44 2021 | (5 verbs) | 90.0%
+Danila | Thu Dec  2 17:12:27 2021 | (10 verbs) | 77.27272727272727%
+Danila | Thu Dec  2 17:15:53 2021 | (20 verbs) | 83.33333333333334%
+Test | Thu Dec  2 17:18:00 2021 | (5 verbs) | 66.66666666666666%
