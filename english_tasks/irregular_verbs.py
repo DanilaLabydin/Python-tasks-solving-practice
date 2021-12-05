@@ -2,6 +2,7 @@
 ##
 # create a program that generates a random sentence for english practice
 #
+import re
 import secrets
 import csv
 import time
@@ -11,10 +12,7 @@ from argparse import ArgumentParser
 
 
 # create lists to store into them verbs for stat
-RIGHT_VERBS = []
-WRONG_VERBS = []
-FIXED_VERBS = []
-RESULT_DICT = {'Correct Verbs': ..., 'Wrong Verbs': ..., 'Fixed Verbs': ...}
+RESULT_DICT = {'Correct Verbs': [], 'Wrong Verbs': [], 'Fixed Verbs': []}
 
 
 def greeting():
@@ -57,27 +55,37 @@ def random_verb(list_of_verbs):
     return verbs
 
 
-def compare_verb(user_input, verb):
+def compare_verb(user_input, current_verb):
     """
     The function compares user's input with certain verb
     :param user_input: a verb that was entered by the user
-    :param verb: the current verb(V3 or V3)
+    :param current_verb: the current verb(V3 or V3)
     :return: True if the user wrote the correct form, otherwise False
     """
-    if user_input.strip().lower() == verb:
-        return True
+    pattern = current_verb
+    result = re.search(pattern, user_input)
+    is_correct_flag = False
+    if result is None:
+        return is_correct_flag
 
-    return False
+    is_correct_flag = True
+    return is_correct_flag
 
 
-def display_statistic(name, nb_verb, list1, list2, list3):
+def display_statistic(name, verb_quantity, verb_dict):
     """The function displays all statistic"""
     # compute the rating system and store it into a file
-    total = len(RIGHT_VERBS) + len(WRONG_VERBS) + len(FIXED_VERBS)
-    scores = ((len(RIGHT_VERBS) + (len(FIXED_VERBS)) * 0.5) / total) * 100
+    total = 0
+    correct_answers = len(verb_dict['Correct Verbs'])
+    wrong_answers = len(verb_dict['Wrong Verbs'])
+    fixed_answers = len(verb_dict['Fixed Verbs'])
+    for key, value in verb_dict.items():
+        total += len(value)
+
+    scores = ((correct_answers + fixed_answers * 0.5) / total) * 100
     now_time = time.asctime()
 
-    user_stat = f'{name.title()} | {now_time} | ({nb_verb} verbs) | {scores}%\n'
+    user_stat = f'{name.title()} | {now_time} | ({verb_quantity} verbs) | {scores}%\n'
     with open('results.txt', 'a') as file:
         file.write(user_stat)
 
@@ -109,14 +117,13 @@ def generate_attempts(nb_attempt, verb, form_nb):
         next_answer = input(f'Enter V{form_nb} again: ')
         if compare_verb(next_answer, verb):
             print('Correct!')
-            FIXED_VERBS.append(verb)
+            RESULT_DICT['Fixed Verbs'].append(verb)
             return True
-    WRONG_VERBS.append(verb)
+    RESULT_DICT['Wrong Verbs'].append(verb)
     return False
 
 
 def main():
-    # add try except
     arguments = get_args()
 
     # read the special file to store verbs into a list
@@ -129,13 +136,13 @@ def main():
         print('Error! You entered a wrong value (max number is 74)')
         sys.exit(1)
 
-    # ...
     for verb in range(1, nb_verb + 1):
         print(f'\nverb №{verb}')
 
         # generate and display a random verb from the list and display the V1 of it
         current_verb = random_verb(verbs_list)
         print(current_verb[0])
+        verb_v1 = current_verb[0]
 
         # read the answers from the user and compare it with correct v2 and v3 forms
         answer_v2 = input('Enter the V2: ')
@@ -148,7 +155,7 @@ def main():
         # 3 attempts to fix it
         if result_v2 and result_v3:
             print('All form is correct!\n')
-            RIGHT_VERBS.append(current_verb[0])
+            RESULT_DICT['Correct Verbs'].append(verb_v1)
             continue
 
         # check if the v2 is incorrect
@@ -166,7 +173,9 @@ def main():
         verbs_list.remove(current_verb)
 
     # display all statistic and store the result into a file
-    display_statistic(name, nb_verb, RIGHT_VERBS, WRONG_VERBS, FIXED_VERBS)
+    ask_stat_save = input('Do you want to save your result(y/n)?:')
+    if ask_stat_save.upper() == 'y':
+        display_statistic(name, nb_verb, RESULT_DICT)
 
 
 if __name__ == '__main__':
