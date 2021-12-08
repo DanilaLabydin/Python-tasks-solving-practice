@@ -1,16 +1,9 @@
 #!/usr/bin/env python3
-##
-# create a script that checks main characteristics of a computer's disk space(disk usage, cpu usage)
-# and a cpu's payload
-#
 import shutil
 import psutil
 import os
 
-#
-# create a function that displays a total, used, free space and a percent of free space
-# @return a message that contains the requirement information
-#
+
 def computer_check():
     # compute all requirement information
     du = shutil.disk_usage('/')
@@ -39,8 +32,10 @@ def check_reboot():
 def main():
     print(computer_check())
     print(check_reboot())
+    print('HOME:' + os.environ.get('HOME', ""))
+    print('SHELL:' + os.environ.get('SHELL', ''))
+    print('FRUIT:' + os.environ.get('FRUIT', 'you are a fool'))
 
 
-# call the main function only if the module is not imported
 if __name__ == '__main__':
     main()
