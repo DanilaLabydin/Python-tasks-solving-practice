@@ -12,7 +12,7 @@ from argparse import ArgumentParser
 
 
 # create lists to store into them verbs for stat
-RESULT_DICT = {'Correct Verbs': [], 'Wrong Verbs': [], 'Fixed Verbs': []}
+RESULT_DICT = {'correct_verbs': [], 'wrong_verbs': [], 'fixed_verbs': []}
 
 
 def greeting():
@@ -64,21 +64,18 @@ def compare_verb(user_input, current_verb):
     """
     pattern = current_verb
     result = re.search(pattern, user_input)
-    is_correct_flag = False
     if result is None:
-        return is_correct_flag
+        return False
 
-    is_correct_flag = True
-    return is_correct_flag
+    return True
 
 
 def display_statistic(name, verb_quantity, verb_dict):
     """The function displays all statistic"""
     # compute the rating system and store it into a file
     total = 0
-    correct_answers = len(verb_dict['Correct Verbs'])
-    wrong_answers = len(verb_dict['Wrong Verbs'])
-    fixed_answers = len(verb_dict['Fixed Verbs'])
+    correct_answers = len(verb_dict['correct_verbs'])
+    fixed_answers = len(verb_dict['fixed_verbs'])
     for key, value in verb_dict.items():
         total += len(value)
 
@@ -90,19 +87,8 @@ def display_statistic(name, verb_quantity, verb_dict):
         file.write(user_stat)
 
     # display lists of verbs
-    print()
-    print(f'Correct verbs: ', end="")
-    for i in list1:
-        print(i, end=",")
-    print()
-    print(f'Wrong verbs:   ', end="")
-    for i in list2:
-        print(i, end=",")
-    print()
-    print(f'Fixed verbs:   ', end="")
-    for i in list3:
-        print(i, end=",")
-    print(f'\nYour scores is {scores}%')
+    for key, value in RESULT_DICT.items():
+        print(f'{key} - {value}')
 
 
 def get_args():
@@ -117,10 +103,35 @@ def generate_attempts(nb_attempt, verb, form_nb):
         next_answer = input(f'Enter V{form_nb} again: ')
         if compare_verb(next_answer, verb):
             print('Correct!')
-            RESULT_DICT['Fixed Verbs'].append(verb)
+            RESULT_DICT['fixed_verbs'].append(verb)
             return True
-    RESULT_DICT['Wrong Verbs'].append(verb)
+    RESULT_DICT['wrong_verbs'].append(verb)
     return False
+
+
+def check_answers(irregular_verb, result_v2, result_v3):
+    """
+    Check if the answers are correct, if all answers are correct, store the infinitive of verb in dictionary(correct_v)
+    otherwise give the user attempts to write the answer correctly
+    """
+    if result_v2 and result_v3:
+        print('All form is correct!\n')
+        RESULT_DICT['correct_verbs'].append(irregular_verb[0])
+        return
+
+    # check if the v2 is incorrect
+    if not result_v2:
+        print('\nV2 is wrong!')
+        if not generate_attempts(2, irregular_verb[1], 2):
+            print(irregular_verb[1])
+            return
+
+    # check if the v3 is incorrect
+    if not result_v3:
+        print('\nV3 is wrong!')
+        if not generate_attempts(2, irregular_verb[2], 3):
+            print(irregular_verb[2])
+            return
 
 
 def main():
@@ -138,11 +149,8 @@ def main():
 
     for verb in range(1, nb_verb + 1):
         print(f'\nverb №{verb}')
-
-        # generate and display a random verb from the list and display the V1 of it
         current_verb = random_verb(verbs_list)
         print(current_verb[0])
-        verb_v1 = current_verb[0]
 
         # read the answers from the user and compare it with correct v2 and v3 forms
         answer_v2 = input('Enter the V2: ')
@@ -150,32 +158,13 @@ def main():
         result_v2 = compare_verb(answer_v2, current_verb[1])
         result_v3 = compare_verb(answer_v3, current_verb[2])
 
-        # if all answers are correct, display it, save the verb in the list
-        # and continue executing with next verb, otherwise give the user
-        # 3 attempts to fix it
-        if result_v2 and result_v3:
-            print('All form is correct!\n')
-            RESULT_DICT['Correct Verbs'].append(verb_v1)
-            continue
-
-        # check if the v2 is incorrect
-        if not result_v2:
-            print('\nV2 is wrong!')
-            if not generate_attempts(2, current_verb[1], 2):
-                print(current_verb[1])
-
-        # check if the v3 is incorrect
-        if not result_v3:
-            print('\nV3 is wrong!')
-            if not generate_attempts(2, current_verb[2], 3):
-                print(current_verb[2])
+        # check the answers and delete the verb from the list
+        check_answers(current_verb, result_v2, result_v3)
 
         verbs_list.remove(current_verb)
 
     # display all statistic and store the result into a file
-    ask_stat_save = input('Do you want to save your result(y/n)?:')
-    if ask_stat_save.upper() == 'y':
-        display_statistic(name, nb_verb, RESULT_DICT)
+    display_statistic(name, nb_verb, RESULT_DICT)
 
 
 if __name__ == '__main__':
