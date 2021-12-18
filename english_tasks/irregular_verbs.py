@@ -3,7 +3,7 @@
 # create a program that generates a random sentence for english practice
 #
 import re
-import secrets
+import random
 import csv
 import time
 import sys
@@ -50,7 +50,7 @@ def random_verb(list_of_verbs):
     :param list_of_verbs:
     :return:
     """
-    random_index = secrets.randbelow(len(list_of_verbs) - 1)
+    random_index = random.randint(0, len(list_of_verbs) - 1)
     verbs = list_of_verbs[random_index]
     return verbs
 
@@ -94,6 +94,7 @@ def display_statistic(name, verb_quantity, verb_dict):
 def get_args():
     a = ArgumentParser()
     a.add_argument('-f', '--filename', dest='verbs_filename', type=str, required=True)
+    a.add_argument('-o', '--filename', dest='stat_filename', type=str, required=True)
     return a.parse_args()
 
 
