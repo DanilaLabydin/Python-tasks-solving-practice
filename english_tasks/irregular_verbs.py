@@ -16,14 +16,14 @@ RESULT_DICT = {'correct_verbs': [], 'wrong_verbs': [], 'fixed_verbs': []}
 
 
 def greeting():
-    print('This exercise help you learn an irregular english verb!\n'
+    print('This exercise help you learn irregular english verbs!\n'
           'Some rules that you should know\n'
           '    Write only V2 and V3 forms of verb\n'
           '    You have only 2 attempts to write the verb correctly\n'
-          'Now enter your name and choose the number of verbs\n')
+          'Now enter the number of verbs\n')
 
 
-def rows_list(file):
+def get_verbs_list(file):
     """
     the function read a file and returns the list of file's rows
     :param file: the current file(name or path)
@@ -44,7 +44,7 @@ def rows_list(file):
         exit(1)
 
 
-def random_verb(list_of_verbs):
+def random_verb(list_of_verbs: list):
     """
     The function creates a random verb from the list
     :param list_of_verbs:
@@ -55,7 +55,7 @@ def random_verb(list_of_verbs):
     return verbs
 
 
-def compare_verb(user_input, current_verb):
+def compare_verb(user_input: str, current_verb: str):
     """
     The function compares user's input with certain verb
     :param user_input: a verb that was entered by the user
@@ -70,7 +70,7 @@ def compare_verb(user_input, current_verb):
     return True
 
 
-def display_statistic(name, verb_quantity, verb_dict):
+def display_statistic(file_name, name, verb_quantity, verb_dict):
     """The function displays all statistic"""
     # compute the rating system and store it into a file
     total = 0
@@ -83,7 +83,7 @@ def display_statistic(name, verb_quantity, verb_dict):
     now_time = time.asctime()
 
     user_stat = f'{name.title()} | {now_time} | ({verb_quantity} verbs) | {scores}%\n'
-    with open('results.txt', 'a') as file:
+    with open(file_name, 'a') as file:
         file.write(user_stat)
 
     # display lists of verbs
@@ -94,7 +94,7 @@ def display_statistic(name, verb_quantity, verb_dict):
 def get_args():
     a = ArgumentParser()
     a.add_argument('-f', '--filename', dest='verbs_filename', type=str, required=True)
-    a.add_argument('-o', '--filename', dest='stat_filename', type=str, required=True)
+    a.add_argument('-o', '--name', dest='stat_filename', type=str, required=True)
     return a.parse_args()
 
 
@@ -124,28 +124,28 @@ def check_answers(irregular_verb, result_v2, result_v3):
     if not result_v2:
         print('\nV2 is wrong!')
         if not generate_attempts(2, irregular_verb[1], 2):
-            print(irregular_verb[1])
-            return
+            print(f'The correct form - {irregular_verb[1]}')
 
     # check if the v3 is incorrect
     if not result_v3:
         print('\nV3 is wrong!')
         if not generate_attempts(2, irregular_verb[2], 3):
-            print(irregular_verb[2])
-            return
+            print(f'The correct form - {irregular_verb[2]}')
+    return
 
 
 def main():
     arguments = get_args()
 
     # read the special file to store verbs into a list
-    verbs_list = rows_list(arguments.verbs_filename)
+    verbs_list = get_verbs_list(arguments.verbs_filename)
     greeting()
     name = input('Enter your name: ')
     nb_verb = int(input('Enter the number of verbs: '))
 
     if not 0 < nb_verb <= len(verbs_list):
         print('Error! You entered a wrong value (max number is 74)')
+        print(len(verbs_list))
         sys.exit(1)
 
     for verb in range(1, nb_verb + 1):
@@ -161,11 +161,10 @@ def main():
 
         # check the answers and delete the verb from the list
         check_answers(current_verb, result_v2, result_v3)
-
         verbs_list.remove(current_verb)
 
     # display all statistic and store the result into a file
-    display_statistic(name, nb_verb, RESULT_DICT)
+    display_statistic(arguments.stat_filename, name, nb_verb, RESULT_DICT)
 
 
 if __name__ == '__main__':
