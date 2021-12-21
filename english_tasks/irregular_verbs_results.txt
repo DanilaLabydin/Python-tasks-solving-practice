@@ -1,0 +1,6 @@
+Test | Sat Dec 18 20:58:21 2021 | (10 verbs) | 100.0%
+Danya | Sat Dec 18 21:10:48 2021 | (10 verbs) | 58.333333333333336%
+T | Sat Dec 18 21:12:17 2021 | (3 verbs) | 100.0%
+T | Sat Dec 18 21:12:45 2021 | (2 verbs) | 0.0%
+Polina | Sat Dec 18 21:50:32 2021 | (10 verbs) | 70.83333333333334%
+Polina | Sat Dec 18 21:54:01 2021 | (1 verbs) | 0.0%
