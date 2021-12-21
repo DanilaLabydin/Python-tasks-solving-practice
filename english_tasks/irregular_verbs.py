@@ -70,7 +70,7 @@ def compare_verb(user_input: str, current_verb: str):
     return True
 
 
-def display_statistic(file_name, name, verb_quantity, verb_dict):
+def save_statistics(file_name, name, verb_quantity, verb_dict):
     """The function displays all statistic"""
     # compute the rating system and store it into a file
     total = 0
@@ -94,7 +94,7 @@ def display_statistic(file_name, name, verb_quantity, verb_dict):
 def get_args():
     a = ArgumentParser()
     a.add_argument('-f', '--filename', dest='verbs_filename', type=str, required=True)
-    a.add_argument('-o', '--name', dest='stat_filename', type=str, required=True)
+    a.add_argument('-o', '--name', dest='stat_filename', type=str, required=False)
     return a.parse_args()
 
 
@@ -164,7 +164,8 @@ def main():
         verbs_list.remove(current_verb)
 
     # display all statistic and store the result into a file
-    display_statistic(arguments.stat_filename, name, nb_verb, RESULT_DICT)
+    if arguments.stat_filename:
+        save_statistics(arguments.stat_filename, name, nb_verb, RESULT_DICT)
 
 
 if __name__ == '__main__':
