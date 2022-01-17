@@ -93,15 +93,13 @@ def generate_sub_verbslist(verbs_list, item_quantity):
     return sub_list
 
 
-def generate_reanswer(boolean_list, verb_second_form, verb_third_form):
-    """The function checks rewrite answers and store them in a boolean list"""
+def generate_reanswer(dict_answers, irregular_verb):
     results = []
-    if not boolean_list[0]:
-        print('\nV2 is wrong!')
-        results.append(generate_attempts(verb_second_form))
-    if not boolean_list[1]:
-        print('\nV3 is wrong!')
-        results.append(generate_attempts(verb_third_form))
+    for item in dict_answers:
+        verb_form, boolean_value = item
+        if not boolean_value:
+            print(f'\n{verb_form.replace("_", " ")}')
+            results.append(generate_attempts(irregular_verb[verb_form]))
     return results
 
 
@@ -139,18 +137,20 @@ def main():
             # store the results in special list
             answer_v2 = input('Enter V2: ')
             answer_v3 = input('Enter V3: ')
-            results = [compare_verb(answer_v2, verb['second_form']),
-                       compare_verb(answer_v3, verb['third_form'])]
 
-            # if all answers are right, store infinitive with appropriate key and continue iterating
-            if all(results):
+            # store the answers in special dictionary
+            result_answers = {'second_form': compare_verb(answer_v2, verb['second_form']),
+                              'third_form': compare_verb(answer_v3, verb['third_form'])}
+
+            # if all answers are right, add the verb into a sorted group and go to the next irregular verb
+            if all(result_answers.values()):
                 sorted_verbs['correct'].append(verb['first_form'])
                 print('All forms are correct!')
                 continue
 
-            # give to the user the chance to rewrite their wrong answers, if all rewrite answers are right
-            # store the verb in fixed group, otherwise in wrong group
-            if all(generate_reanswer(results, verb['second_form'], verb['third_form'])):
+            # give to the user two attempts to rewrite the answer. If the reanswer is correct, add the verb
+            # into a fixed group, otherwise into a wrong group
+            if all(generate_reanswer(result_answers.items(), verb)):
                 sorted_verbs['fixed'].append(verb['first_form'])
                 continue
             sorted_verbs['wrong'].append(verb['first_form'])
