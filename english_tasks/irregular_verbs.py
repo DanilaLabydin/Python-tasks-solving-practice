@@ -12,7 +12,7 @@ def greeting():
           'Some rules that you should know\n'
           '    Write only V2 and V3 forms of verb\n'
           '    You have only 2 attempts to write the verb correctly\n'
-          'Now enter the number of verbs to practice\n')
+          'Now enter your name and the number of verbs to practice\n')
 
 
 def get_verbs_list(file):
@@ -72,7 +72,7 @@ def get_args():
     return a.parse_args()
 
 
-def generate_attempts(verb):
+def promt_user(verb):
     """
     The function gives the user a certain number of attempts to rewrite his answer, if user's new answer is right,
     return True, otherwise False
@@ -95,11 +95,11 @@ def generate_sub_verbslist(verbs_list, item_quantity):
 
 def generate_reanswer(dict_answers, irregular_verb):
     results = []
-    for item in dict_answers:
+    for item in dict_answers.items():
         verb_form, boolean_value = item
         if not boolean_value:
-            print(f'\n{verb_form.replace("_", " ")}')
-            results.append(generate_attempts(irregular_verb[verb_form]))
+            print(f'\n{verb_form.replace("_", " ").title()} is wrong!')
+            results.append(promt_user(irregular_verb[verb_form]))
     return results
 
 
@@ -127,7 +127,7 @@ def main():
         sample_verbs = generate_sub_verbslist(verbs_list, verb_quantity)
 
         # create a dict to store each verb in the separated group (correct; wrong;fixed) verbs
-        sorted_verbs = {'correct': [], 'wrong': [], 'fixed': []}
+        user_output = {'correct': [], 'wrong': [], 'fixed': []}
 
         for count, verb in enumerate(sample_verbs, start=1):
             print(f'\nThe verb №{count}\n')
@@ -144,24 +144,24 @@ def main():
 
             # if all answers are right, add the verb into a sorted group and go to the next irregular verb
             if all(result_answers.values()):
-                sorted_verbs['correct'].append(verb['first_form'])
+                user_output['correct'].append(verb['first_form'])
                 print('All forms are correct!')
                 continue
 
             # give to the user two attempts to rewrite the answer. If the reanswer is correct, add the verb
             # into a fixed group, otherwise into a wrong group
-            if all(generate_reanswer(result_answers.items(), verb)):
-                sorted_verbs['fixed'].append(verb['first_form'])
+            if all(generate_reanswer(result_answers, verb)):
+                user_output['fixed'].append(verb['first_form'])
                 continue
-            sorted_verbs['wrong'].append(verb['first_form'])
+            user_output['wrong'].append(verb['first_form'])
             print(f'\nCorrect forms: {verb["second_form"]}, {verb["third_form"]}')
 
         # display the practice results
-        display_stat(user_name, verb_quantity, sorted_verbs)
+        display_stat(user_name, verb_quantity, user_output)
 
         # if user entered the save file, then save info in it
         if arguments.stat_filename:
-            save_statistics(arguments.stat_filename, user_name, verb_quantity, sorted_verbs)
+            save_statistics(arguments.stat_filename, user_name, verb_quantity, user_output)
 
         # ask the user about next practice
         ask_again = input('Do you want to complete this task again(q to quit): ')
