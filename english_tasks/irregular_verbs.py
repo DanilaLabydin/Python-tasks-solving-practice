@@ -16,8 +16,8 @@ def greeting():
           'Now enter your name and the number of verbs to practice\n')
 
 
-def get_verbs_list(file):
-    """the function read a file and returns the list of file's rows"""
+def get_verbs_dict(file):
+    """the function read a file and returns the dict of file's verbs"""
     rows = []
     try:
         with open(file) as f:
@@ -45,6 +45,8 @@ def compute_scores(verb_dict):
     correct_answers = len(verb_dict['correct'])
     fixed_answers = len(verb_dict['fixed'])
     wrong_answers = len(verb_dict['wrong'])
+    if correct_answers + fixed_answers == 0:
+        return 0
     total = correct_answers + fixed_answers + wrong_answers
     scores = ((correct_answers + fixed_answers * 0.5) / total) * 100
     return scores
@@ -75,7 +77,7 @@ def get_args():
 
 def promt_user(verb):
     """
-    The function gives the user a certain number of attempts to rewrite his answer, if user's new answer is right,
+    The function gives the user 2 attempts to rewrite his answer, if user's new answer is right,
     return True, otherwise False
     """
     for attempt in range(1, 3):
@@ -88,9 +90,9 @@ def promt_user(verb):
     return False
 
 
-def generate_sub_verbslist(verbs_list, item_quantity):
-    """The function generates a list from part of an other list"""
-    sub_list = verbs_list[:item_quantity]
+def generate_sub_verbsdict(verbs_dict, item_quantity):
+    """The function generates a dict from part of an other dict"""
+    sub_list = verbs_dict[:item_quantity]
     return sub_list
 
 
@@ -109,7 +111,7 @@ def main():
     arguments = get_args()
 
     # read the special file to store verbs into a list
-    verbs_list = get_verbs_list(arguments.verbs_filename)
+    verbs_dict = get_verbs_dict(arguments.verbs_filename)
 
     # display the greeting message that contains the rules of the program
     greeting()
@@ -122,26 +124,35 @@ def main():
             sys.exit(1)
 
         # mix the content of a list
-        random.shuffle(verbs_list)
+        random.shuffle(verbs_dict)
 
         # extract the certain number of verb to the sub_verbs_list from the main list
-        sample_verbs = generate_sub_verbslist(verbs_list, verb_quantity)
+        sample_verbs = generate_sub_verbsdict(verbs_dict, verb_quantity)
 
         # create a dict to store each verb in the separated group (correct; wrong;fixed) verbs
         user_output = {'correct': [], 'wrong': [], 'fixed': []}
+
+        # display the message how to exit the program
+        print("\nEnter 'q' to quit!\n")
 
         for count, verb in enumerate(sample_verbs, start=1):
             print(f'\nThe verb №{count}\n')
             print(f'{verb["first_form"]} - {verb["translate"]}')
 
-            # read the answers from the user and compare it with correct v2 and v3 forms
-            # store the results in special list
-            answer_v2 = input('Enter V2: ')
-            answer_v3 = input('Enter V3: ')
+            # read the answers from the user and compare it with correct v2 and v3 forms and store them
+            user_answers = input('Enter the V2 and V3 forms like(did done): ')
+            if user_answers == 'q':
+                break
 
-            # store the answers in special dictionary
-            result_answers = {'second_form': compare_verb(answer_v2, verb['second_form']),
-                              'third_form': compare_verb(answer_v3, verb['third_form'])}
+            try:
+                values = re.search(r'^([A-Za-z]*)\s*([A-Za-z]*)$', user_answers)
+
+                # store the answers in special dictionary
+                result_answers = {'second_form': compare_verb(values.group(1), verb['second_form']),
+                                  'third_form': compare_verb(values.group(2), verb['third_form'])}
+            except AttributeError:
+                print('\nYour answer was entered in the wrong format!')
+                continue
 
             # if all answers are right, add the verb into a sorted group and go to the next irregular verb
             if all(result_answers.values()):
