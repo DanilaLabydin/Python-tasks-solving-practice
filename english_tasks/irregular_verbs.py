@@ -3,6 +3,7 @@ import random
 import csv
 import time
 import sys
+import re
 
 from argparse import ArgumentParser
 
@@ -117,7 +118,7 @@ def main():
     while True:
         verb_quantity = int(input('Enter the number of verb to practice: '))
         if not 0 < verb_quantity <= 74:
-            print('Error! You entered a wrong value (max number is 75)')
+            print('Error! You entered a wrong value (max number is 74)')
             sys.exit(1)
 
         # mix the content of a list
