@@ -16,7 +16,7 @@ def greeting():
           'Now enter your name and the number of verbs to practice\n')
 
 
-def get_verbs_dict(file):
+def get_verbs_list(file):
     """the function read a file and returns the dict of file's verbs"""
     rows = []
     try:
@@ -90,12 +90,6 @@ def promt_user(verb):
     return False
 
 
-def generate_sub_verbsdict(verbs_dict, item_quantity):
-    """The function generates a dict from part of an other dict"""
-    sub_list = verbs_dict[:item_quantity]
-    return sub_list
-
-
 def generate_reanswer(dict_answers, irregular_verb):
     results = []
     for item in dict_answers.items():
@@ -111,7 +105,7 @@ def main():
     arguments = get_args()
 
     # read the special file to store verbs into a list
-    verbs_dict = get_verbs_dict(arguments.verbs_filename)
+    verbs_list = get_verbs_list(arguments.verbs_filename)
 
     # display the greeting message that contains the rules of the program
     greeting()
@@ -124,10 +118,10 @@ def main():
             sys.exit(1)
 
         # mix the content of a list
-        random.shuffle(verbs_dict)
+        random.shuffle(verbs_list)
 
         # extract the certain number of verb to the sub_verbs_list from the main list
-        sample_verbs = generate_sub_verbsdict(verbs_dict, verb_quantity)
+        sample_verbs = verbs_list[:verb_quantity]
 
         # create a dict to store each verb in the separated group (correct; wrong;fixed) verbs
         user_output = {'correct': [], 'wrong': [], 'fixed': []}
@@ -140,12 +134,12 @@ def main():
             print(f'{verb["first_form"]} - {verb["translate"]}')
 
             # read the answers from the user and compare it with correct v2 and v3 forms and store them
-            user_answers = input('Enter the V2 and V3 forms like(did done): ')
+            user_answers = input('Enter the V2 and V3 separated by commas format[did done]: ')
             if user_answers == 'q':
                 break
 
             try:
-                values = re.search(r'^([A-Za-z]*)\s*([A-Za-z]*)$', user_answers)
+                values = re.search(r'^\s*([A-Za-z]*)\s*([A-Za-z]*)$', user_answers)
 
                 # store the answers in special dictionary
                 result_answers = {'second_form': compare_verb(values.group(1), verb['second_form']),
