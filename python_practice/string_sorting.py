@@ -5,19 +5,27 @@ import string
 import re
 
 def order(sentence):
-  # code here
-  order = {}
-  unsorted_words = sentence.split()
-  for unsorted_word in unsorted_words:
-      nb = (re.findall(r'[1-9]', unsorted_word))
-      #print(int(nb), type(str(nb)))
+    # code here
+    order = {
+        1: '',
+        2: '',    
+        3: '',    
+        4: '',    
+        5: '',
+        6: '',
+        7: '',    
+        8: '',    
+        9: '',             
+            }
+    unsorted_words = sentence.split()
 
-      index = str(nb)
-      print()
-      order[int(index.strip(string.punctuation))] = unsorted_word
+    for unsorted_word in unsorted_words:
+        nb = (re.findall(r'[1-9]', unsorted_word))
+        index = str(nb)
+        order[int(str(nb).strip(string.punctuation))] = unsorted_word
+    
 
-
-  return order
+    return ' '.join([v for v in order.values()]).strip()
 
 
 
