@@ -37,3 +37,6 @@ while True:
     else:
         print(find_missing_letter(value2))
         break
+
+
+print(ord('b'))
