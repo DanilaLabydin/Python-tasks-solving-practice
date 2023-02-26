@@ -17,14 +17,11 @@ def order(sentence):
         8: '',    
         9: '',             
             }
+    
     unsorted_words = sentence.split()
-
     for unsorted_word in unsorted_words:
         nb = (re.findall(r'[1-9]', unsorted_word))
-        index = str(nb)
         order[int(str(nb).strip(string.punctuation))] = unsorted_word
-    
-
     return ' '.join([v for v in order.values()]).strip()
 
 

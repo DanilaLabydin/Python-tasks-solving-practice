@@ -42,7 +42,7 @@ def solution(n):
 
 while True:
     value = input('Enter an Integer [q to quit]: ')
-    if type(value) != 'Int':
+    if type(value) == 'q':
         break
     print(f'Roman number is: {solution(int(value))}')
 

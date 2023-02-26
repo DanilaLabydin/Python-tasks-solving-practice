@@ -14,4 +14,5 @@ while True:
     else:
         print(count_bits(int(value)))
         
-    
+
+
