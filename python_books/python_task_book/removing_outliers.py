@@ -20,20 +20,22 @@ def remove_outliers(data, num):
 
 def main():
     data = []
-    num = int(input('Enter the number(0 to quit): '))
+    num = int(input("Enter the number(0 to quit): "))
 
     while num != 0:
         data.append(num)
-        num = int(input('Enter the number(0 to quit): '))
-    nb_outliers = int(input('Enter the number of outliers that will bw removed from the list: '))
+        num = int(input("Enter the number(0 to quit): "))
+    nb_outliers = int(
+        input("Enter the number of outliers that will bw removed from the list: ")
+    )
 
     if nb_outliers * 2 < len(data):
         new_data = remove_outliers(data, nb_outliers)
-        print(f'\nThe original list is: {data}')
-        print(f'The list without outliers is: {new_data}')
+        print(f"\nThe original list is: {data}")
+        print(f"The list without outliers is: {new_data}")
     else:
-        print('ERROR! you wrote not enough values for the calculations')
+        print("ERROR! you wrote not enough values for the calculations")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

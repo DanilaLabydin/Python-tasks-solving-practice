@@ -15,7 +15,7 @@
 
 def snail(snail_map):
     new_list = []
-    while len(snail_map) >=1:
+    while len(snail_map) >= 1:
         new_list += snail_map[0]
         del snail_map[0]
         for i in snail_map:

@@ -2,5 +2,6 @@
 def number_to_string(num):
     return str(num)
 
-num = input('Enter a number: ')
+
+num = input("Enter a number: ")
 print(number_to_string(num))

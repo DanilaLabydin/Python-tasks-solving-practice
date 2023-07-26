@@ -7,7 +7,7 @@ words = []
 words_without_duplicates = []
 # read the dimension from the user("" to quit)
 while True:
-    word = input(f'Enter the word to store it into a list(blank line to quit): ')
+    word = input(f"Enter the word to store it into a list(blank line to quit): ")
     if word == "":
         break
     words.append(word)

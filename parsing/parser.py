@@ -15,6 +15,4 @@ async def scrape(url):
 
 
 async def run():
-    _start = await aiometer.run_on_each(
-        scrape
-    )
+    _start = await aiometer.run_on_each(scrape)

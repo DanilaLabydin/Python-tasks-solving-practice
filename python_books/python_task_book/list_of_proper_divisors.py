@@ -20,9 +20,9 @@ def proper_divisor(n):
 
 
 def main():
-    nb = int(input('Enter the number: '))
-    print(f'The proper divisors of this number is: {proper_divisor(nb)}')
+    nb = int(input("Enter the number: "))
+    print(f"The proper divisors of this number is: {proper_divisor(nb)}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

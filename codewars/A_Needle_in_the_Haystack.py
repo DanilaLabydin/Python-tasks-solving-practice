@@ -13,8 +13,8 @@
 
 def find_needle(haystack):
     try:
-        needle_index = haystack.index('needle')
-        return f'found the needle at position {needle_index}'
+        needle_index = haystack.index("needle")
+        return f"found the needle at position {needle_index}"
     except ValueError as e:
-        print(f'No needle found')
+        print(f"No needle found")
         return None

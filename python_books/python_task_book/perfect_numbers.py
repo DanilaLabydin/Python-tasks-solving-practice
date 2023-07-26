@@ -6,6 +6,7 @@
 # numbers between 1 and 10_000
 #
 from list_of_proper_divisors import proper_divisor
+
 LIMIT = 10_000
 
 
@@ -28,11 +29,11 @@ def is_number_perfect(nb):
 
 
 def main():
-    print(f'The number perfect number between 1 and {LIMIT} is: ')
+    print(f"The number perfect number between 1 and {LIMIT} is: ")
     for i in range(1, LIMIT + 1):
         if is_number_perfect(i):
             print(i)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

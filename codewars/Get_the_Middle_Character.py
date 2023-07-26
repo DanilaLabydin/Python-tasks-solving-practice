@@ -24,6 +24,6 @@ def get_middle(s):
 
     # check if the string is even
     if len(s) % 2 == 0:
-        return s[middle - 1: middle + 1]
-    
+        return s[middle - 1 : middle + 1]
+
     return s[middle]

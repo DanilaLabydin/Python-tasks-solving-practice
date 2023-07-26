@@ -14,7 +14,7 @@
 
 
 def rot13(message):
-    encoded_message = ''
+    encoded_message = ""
     for letter in message:
         ord_nb = ord(letter)
         print(ord_nb)

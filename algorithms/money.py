@@ -34,7 +34,13 @@ def find_optimal_trading_days(N, prices):
                 second_buy_day = i
                 second_sell_day = i
 
-        return max_profit, first_buy_day, first_sell_day, second_buy_day, second_sell_day
+        return (
+            max_profit,
+            first_buy_day,
+            first_sell_day,
+            second_buy_day,
+            second_sell_day,
+        )
 
     if N < 4:
         # Not enough data to perform two transactions
@@ -44,7 +50,13 @@ def find_optimal_trading_days(N, prices):
             sell_days.append(sell_day + 1)
     else:
         # Perform two transactions
-        max_profit, first_buy_day, first_sell_day, second_buy_day, second_sell_day = find_two_transactions()
+        (
+            max_profit,
+            first_buy_day,
+            first_sell_day,
+            second_buy_day,
+            second_sell_day,
+        ) = find_two_transactions()
         if max_profit > 0:
             buy_days.extend([first_buy_day + 1, second_buy_day + 1])
             sell_days.extend([first_sell_day + 1, second_sell_day + 1])

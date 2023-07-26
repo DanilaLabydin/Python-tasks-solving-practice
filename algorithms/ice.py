@@ -38,37 +38,36 @@
 
 #     perfect_sculpture_nbs += 1
 
-    
+
 #     inital_ice = skulp_dict[ice_to_perfect[i]]
 #     initial_ice_index = sculptures_ice.index(inital_ice)
 #     perfect_sculpture_list.append(initial_ice_index + 1)
 #     # del sculptures_ice[initial_ice_index]
-    
+
 
 # print(perfect_sculpture_nbs)
 # perfect_sculpture_list_str = " ".join(map(str, perfect_sculpture_list))
 # print(perfect_sculpture_list_str)
 
 
-
 def find_ideal_sculptures(N, X, T, sculptures):
     sculpture_list = [(i, abs(weight - X)) for i, weight in enumerate(sculptures, 1)]
-    
+
     sorted_sculptures = sorted(sculpture_list, key=lambda x: x[1])
-    
+
     ideal_sculptures = []
     remaining_time = T
-    
+
     for sculpture in sorted_sculptures:
         index, difference = sculpture
-        
+
         if difference <= remaining_time:
             ideal_sculptures.append(index)
             remaining_time -= difference
-        
+
         else:
             break
-    
+
     return len(ideal_sculptures), ideal_sculptures
 
 

@@ -1,5 +1,6 @@
 import re
-verbs = ['swim', 'read', 'teach', 'sex', 'kiss', 'fish']
+
+verbs = ["swim", "read", "teach", "sex", "kiss", "fish"]
 
 
 def add_ending(word):
@@ -8,9 +9,9 @@ def add_ending(word):
     :param word: the V1 verb
     :return: the V1 with right ending
     """
-    if re.search(r'ss|ch|sh|x', word):
-        return word + 'es'
-    return word + 's'
+    if re.search(r"ss|ch|sh|x", word):
+        return word + "es"
+    return word + "s"
 
 
 def main():
@@ -18,5 +19,5 @@ def main():
         print(add_ending(verb))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

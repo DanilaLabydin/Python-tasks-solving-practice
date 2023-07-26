@@ -22,7 +22,7 @@ def calculate_optimal_transactions(prices):
     # Check if additional transactions can improve the profit
     while k < 2 and buy_day:
         # Remove the first pair of transactions from the prices
-        prices = prices[sell_day[0]:]
+        prices = prices[sell_day[0] :]
         n = len(prices)
         buy_index = -1
 
@@ -41,6 +41,7 @@ def calculate_optimal_transactions(prices):
                     k = 2
 
     return k, buy_day, sell_day
+
 
 # Read the input
 n = int(input())

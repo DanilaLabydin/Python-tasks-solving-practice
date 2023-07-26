@@ -4,10 +4,10 @@
 # the list in reverse order
 #
 data = []
-num = int(input('Enter the number(0 to quit): '))
+num = int(input("Enter the number(0 to quit): "))
 while num != 0:
     data.append(num)
-    num = int(input('Enter the number(0 to quit): '))
+    num = int(input("Enter the number(0 to quit): "))
 
 # sort the list in reverse order
 data.reverse()

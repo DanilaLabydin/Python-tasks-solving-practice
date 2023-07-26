@@ -9,7 +9,7 @@ import sys
 
 numbers = []
 while True:
-    nb = input('Enter the number(blank line to quit): ')
+    nb = input("Enter the number(blank line to quit): ")
     if nb == "":
         break
     numbers.append(nb)
@@ -33,7 +33,7 @@ for number in numbers:
         zeros.append(number)
 
 # display the result
-print('The sorted number is: ')
+print("The sorted number is: ")
 for nb in negatives:
     print(nb, end=", ")
 for nb in zeros:

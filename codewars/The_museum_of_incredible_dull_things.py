@@ -19,6 +19,6 @@ def remove_smallest(numbers):
     new_nbs = numbers[:]
     if len(numbers) == 0:
         return numbers
-    
+
     new_nbs.remove(min(numbers))
     return new_nbs

@@ -28,8 +28,6 @@ class Neuron:
         return False
 
 
-
-
 def main():
     # create am instance of Neuron class
     simple_neuron = Neuron(20)
@@ -43,6 +41,5 @@ def main():
         print(simple_neuron.activation_function(summatr))
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

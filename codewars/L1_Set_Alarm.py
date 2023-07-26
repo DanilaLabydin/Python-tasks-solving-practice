@@ -2,7 +2,7 @@
 
 # The function should return true if you are employed and not on vacation (because these are the circumstances under which you need to set an alarm). It should return false otherwise. Examples:
 
-# employed | vacation 
+# employed | vacation
 # true     | true     => false
 # true     | false    => true
 # false    | true     => false
@@ -12,5 +12,5 @@
 def set_alarm(employed, vacation):
     if employed and not vacation:
         return True
-    
+
     return False
