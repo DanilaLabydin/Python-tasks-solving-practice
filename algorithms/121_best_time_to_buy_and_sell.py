@@ -1,7 +1,7 @@
 from typing import List
 
 
-class Solution:
+class SolutionSlow:
     def maxProfit(self, prices: List[int]) -> int:
         best = 0
         buy_price_log = []
@@ -19,16 +19,22 @@ class Solution:
             if profit > best:
                 best = profit
 
-            # for sell_price in set(prices[index_buy + 1:]):
-            #     profit = sell_price - prices[index_buy]
-            #     # print(f'buy: {prices[index_buy]} -- sell: {prices[index_sell]} -- profit: {profit}')
-            #     if profit > best:
-            #         best = profit
+        return best
 
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        best = 0
+        day_buy = prices[0]
+        for day_sell in prices[1:]:
+            if day_sell > day_buy:
+                best = max(best, day_sell - day_buy)
+            else:
+                day_buy = day_sell
         return best
 
 
 Test = Solution()
 array1 = [7, 1, 5, 3, 6, 4]
 array2 = [7, 6, 4, 3, 1]
-print(Test.maxProfit(array2))
+print(Test.maxProfit(array1))

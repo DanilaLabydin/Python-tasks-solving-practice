@@ -15,8 +15,12 @@ class Solution:
         return len(nums), nums
 
 
+
+
 Test = Solution()
 array1 = [1, 1]
 array2 = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
+
+
 
 print(Test.removeDuplicates(array1))
