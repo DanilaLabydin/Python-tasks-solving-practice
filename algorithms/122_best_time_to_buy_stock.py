@@ -16,6 +16,6 @@ class Solution:
 Test = Solution()
 array1 = [7, 1, 5, 3, 6, 4]
 array2 = [7, 6, 4, 3, 1]
-array3 = [3,3,5,0,0,3,1,4]
+array3 = [3, 3, 5, 0, 0, 3, 1, 4]
 
 print(Test.maxProfit(array3))
