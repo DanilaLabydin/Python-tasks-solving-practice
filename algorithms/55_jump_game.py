@@ -24,6 +24,7 @@ class Solution:
 
 
 Test = Solution()
+
 array1 = [2, 3, 1, 1, 4]  # True
 array2 = [3, 2, 1, 0, 4]  # False
 array3 = [0, 1]  # False
