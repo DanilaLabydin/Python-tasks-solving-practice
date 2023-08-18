@@ -56,31 +56,31 @@ class FibonacciIterator:
 #     print(item)
 
 
-sequence = SequenceIterator([1, 2, 3, 4])
-print(id(sequence))
+# sequence = SequenceIterator([1, 2, 3, 4])
+# print(id(sequence))
 
-# get an iterator over the data
-iterator = sequence.__iter__()
-print(id(iterator))
-print(iterator.index)
-while True:
-    try:
-        item = iterator.__next__()
-    except StopIteration:
-        break
-    else:
-        print(item)
+# # get an iterator over the data
+# iterator = sequence.__iter__()
+# print(id(iterator))
+# print(iterator.index)
+# while True:
+#     try:
+#         item = iterator.__next__()
+#     except StopIteration:
+#         break
+#     else:
+#         print(item)
 
-print(iterator.index)
-iterator = sequence.__iter__()
-print(id(iterator))
-while True:
-    try:
-        item = iterator.__next__()
-    except StopIteration:
-        break
-    else:
-        print(item)
+# print(iterator.index)
+# iterator = sequence.__iter__()
+# print(id(iterator))
+# while True:
+#     try:
+#         item = iterator.__next__()
+#     except StopIteration:
+#         break
+#     else:
+#         print(item)
 
 
 # for item in SquareIterator([1, 2, 3, 4]):
