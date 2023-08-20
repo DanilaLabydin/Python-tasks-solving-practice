@@ -64,8 +64,9 @@ class Solution2:
             output.append(group)
             for j in group:
                 strs.remove(j)
-        output.append(strs)
-        return output
+        if len(strs) != 0:
+            output.append(strs)
+        return output[::-1]
 
 
 MySolution = Solution2()
@@ -81,5 +82,6 @@ test1 = [
 ]  # [["bat"],["nat","tan"],["ate","eat","tea"]]
 test2 = [""]  # [[""]]
 test3 = ["a"]  # [["a"]]
+test4 = ["stop","pots","reed","","tops","deer","opts",""]
 
-print(MySolution.groupAnagrams(test1))
+print(MySolution.groupAnagrams(test4))
