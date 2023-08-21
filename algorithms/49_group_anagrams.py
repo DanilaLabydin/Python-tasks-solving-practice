@@ -82,6 +82,6 @@ test1 = [
 ]  # [["bat"],["nat","tan"],["ate","eat","tea"]]
 test2 = [""]  # [[""]]
 test3 = ["a"]  # [["a"]]
-test4 = ["stop","pots","reed","","tops","deer","opts",""]
+test4 = ["stop", "pots", "reed", "", "tops", "deer", "opts", ""]
 
 print(MySolution.groupAnagrams(test4))
