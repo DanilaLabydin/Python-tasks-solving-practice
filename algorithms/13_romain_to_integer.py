@@ -8,26 +8,24 @@ class Solution:
             "C": 100,
             "D": 500,
             "M": 1000,
-            "IV": 4,
-            "IX": 9,
-            "XL": 40,
-            "XC": 90,
-            "CD": 400,
-            "CM": 900,
         }
 
         output = 0
         for i in range(len(s)):
-            if not i + 1 >= len(s):
-                if nums.get(s[i] + s[i + 1]) is not None:
-                    print(output)
-                    output += nums.get(s[i] + s[i + 1])
-                    i += 1
+            if i + 1 < len(s):
+                if s[i] == "I" and (s[i + 1] == "V" or s[i + 1] == "X"):
+                    output -= nums[s[i]]
+                    continue
+
+                if s[i] == "X" and (s[i + 1] == "L" or s[i + 1] == "C"):
+                    output -= nums[s[i]]
+                    continue
+
+                if s[i] == "C" and (s[i + 1] == "D" or s[i + 1] == "M"):
+                    output -= nums[s[i]]
                     continue
 
             output += nums[s[i]]
-            print(output)
-
         return output
 
 
@@ -37,4 +35,4 @@ test2 = "LVIII"  # 58
 test3 = "MCMXCIV"  # 1994
 
 
-print(Test.romanToInt(test3))
+print(Test.romanToInt(test2))
