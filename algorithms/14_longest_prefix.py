@@ -21,3 +21,6 @@ array1 = ["flower", "flow", "flight"]
 array2 = ["dog", "racecar", "car"]
 
 print(Test.longestCommonPrefix(array2))
+
+
+
