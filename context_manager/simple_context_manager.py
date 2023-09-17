@@ -18,3 +18,4 @@ class HelloContextManager:
 with HelloContextManager() as word:
     print(word)
     print(word[100])
+    
